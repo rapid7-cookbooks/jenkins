@@ -36,7 +36,7 @@ end
 group node['jenkins']['node']['group']
 
 user node['jenkins']['node']['user'] do
-  comment 'Jenkins CI node (ssh)'
+  comment node['jenkins']['node']['user_comment']
   gid node['jenkins']['node']['group']
   home node['jenkins']['node']['home']
   shell node['jenkins']['node']['shell']

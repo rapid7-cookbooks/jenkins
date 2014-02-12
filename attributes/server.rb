@@ -26,6 +26,7 @@ default['jenkins']['server']['home'] = '/var/lib/jenkins'
 default['jenkins']['server']['log_dir'] = '/var/log/jenkins'
 
 default['jenkins']['server']['user'] = 'jenkins'
+default['jenkins']['server']['user_comment'] = 'Jenkins CI master'
 default['jenkins']['server']['dir_permissions'] = 00755
 default['jenkins']['server']['ssh_dir_permissions'] = 00700
 case node['platform_family']

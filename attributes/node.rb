@@ -42,6 +42,7 @@ else
 end
 
 default['jenkins']['node']['user'] = 'jenkins-node'
+default['jenkins']['node']['user_comment'] = 'Jenkins CI node (jnlp)'
 default['jenkins']['node']['group'] = 'jenkins-node'
 default['jenkins']['node']['shell'] = '/bin/sh'
 default['jenkins']['node']['name'] = node['fqdn']

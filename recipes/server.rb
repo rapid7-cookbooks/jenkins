@@ -28,6 +28,7 @@
 include_recipe 'java::default'
 
 user node['jenkins']['server']['user'] do
+  comment node['jenkins']['server']['user_comment']
   home node['jenkins']['server']['home']
 end
 

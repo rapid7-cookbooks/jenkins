@@ -29,7 +29,7 @@ slave_jar = "#{node['jenkins']['node']['home']}/slave.jar"
 group node['jenkins']['node']['group']
 
 user node['jenkins']['node']['user'] do
-  comment 'Jenkins CI node (jnlp)'
+  comment node['jenkins']['node']['user_comment']
   gid node['jenkins']['node']['group']
   home node['jenkins']['node']['home']
 end
