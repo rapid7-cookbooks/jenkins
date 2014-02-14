@@ -4,6 +4,10 @@ cd <%= node['jenkins']['node']['home'] %>
 exec chpst -u <%= node['jenkins']['node']['user'] %> \
   env HOME=<%= node['jenkins']['node']['home'] %> \
   USER=<%= node['jenkins']['node']['user'] %> \
+<% if node['jenkins']['node']['locale'] %>
+  LANG="<%= node['jenkins']['node']['locale'] %>" \
+  LC_ALL="<%= node['jenkins']['node']['locale'] %>" \
+<% end %>
   java -jar <%= node['jenkins']['node']['home'] %>/slave.jar \
 <% if node['jenkins']['node']['no_certificate_check'] -%>
   -noCertificateCheck \
