@@ -48,6 +48,7 @@ def jenkins_node_defaults(args)
     args[:username] ||= ''
     args[:private_key] ||= ''
     args[:jvm_options] ||= ''
+    args[:credentials_id] ||= nil
     args[:host_dsa_public] ||= nil
     args[:host_rsa_public] ||= nil
   end
@@ -97,8 +98,12 @@ def jenkins_node_manage(args) # rubocop:disable MethodLength
       password = %Q("#{args[:password]}")
     end
 
-    launcher = %Q(new_ssh_launcher(["#{args[:host]}", #{args[:port]}, "#{args[:username]}", #{password},
-                                    "#{args[:private_key]}", "#{args[:jvm_options]}"] as Object[]))
+    if args[:credentials_id]
+      launcher = %Q(new_ssh_credentials_launcher(["#{args[:host]}", #{args[:port]}, "#{args[:credentials_id]}", "#{args[:jvm_options]}", null, null, null, null] as Object[]))
+    else
+      launcher = %Q(new_ssh_launcher(["#{args[:host]}", #{args[:port]}, "#{args[:username]}", #{password}, "#{args[:private_key]}", "#{args[:jvm_options]}"] as Object[]))
+    end
+
   end
 
   remote_fs = args[:remote_fs].gsub('\\', '\\\\\\') # C:\jenkins -> C:\\jenkins
@@ -123,6 +128,12 @@ def new_ssh_launcher(args) {
   Jenkins.instance.pluginManager.getPlugin('ssh-slaves').classLoader.
     loadClass('hudson.plugins.sshslaves.SSHLauncher').
       getConstructor([String, int, String, String, String, String] as Class[]).newInstance(args)
+}
+
+def new_ssh_credentials_launcher(args) {
+  Jenkins.instance.pluginManager.getPlugin('ssh-slaves').classLoader.
+    loadClass('hudson.plugins.sshslaves.SSHLauncher').
+      getConstructor([String, int, String, String, String, String, String, Integer] as Class[]).newInstance(args)
 }
 
 if (env != null) {
