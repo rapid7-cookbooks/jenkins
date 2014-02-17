@@ -8,10 +8,9 @@ exec chpst -u <%= node['jenkins']['node']['user'] %> \
   LANG="<%= node['jenkins']['node']['locale'] %>" \
   LC_ALL="<%= node['jenkins']['node']['locale'] %>" \
 <% end %>
-  java -jar <%= node['jenkins']['node']['home'] %>/slave.jar \
+  java <%= node['jenkins']['node']['jvm_options'] %> -jar <%= node['jenkins']['node']['home'] %>/slave.jar \
 <% if node['jenkins']['node']['no_certificate_check'] -%>
   -noCertificateCheck \
 <% end -%>
   -jnlpUrl <%= node['jenkins']['server']['url'] %>/computer/<%= node['jenkins']['node']['name'] %>/slave-agent.jnlp \
-  <%= !@options[:secret] || @options[:secret].empty? ? '' : "-secret #{@options[:secret]}" %> \
-  <%= node['jenkins']['node']['jvm_options'] %>
+  <%= !@options[:secret] || @options[:secret].empty? ? '' : "-secret #{@options[:secret]}" %>
