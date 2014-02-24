@@ -10,6 +10,9 @@ exec chpst -u <%= node['jenkins']['server']['user'] %> -U <%= node['jenkins']['s
   LANG="<%= node['jenkins']['server']['locale'] %>" \
   LC_ALL="<%= node['jenkins']['server']['locale'] %>" \
 <% end %>
+<% if node['jenkins']['server']['path'] %>
+  PATH="<%= node['jenkins']['server']['path'] %>" \
+<% end %>
   java <%= node['jenkins']['server']['jvm_options'] %> -jar jenkins.war \
   -Xloggc:<%= node['jenkins']['server']['log_dir'] %>/gclog.log \
   --httpPort=<%= node['jenkins']['server']['port'] %>

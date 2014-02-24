@@ -8,6 +8,9 @@ exec chpst -u <%= node['jenkins']['node']['user'] %> \
   LANG="<%= node['jenkins']['node']['locale'] %>" \
   LC_ALL="<%= node['jenkins']['node']['locale'] %>" \
 <% end %>
+<% if node['jenkins']['node']['path'] %>
+  PATH="<%= node['jenkins']['node']['path'] %>" \
+<% end %>
   java <%= node['jenkins']['node']['jvm_options'] %> -jar <%= node['jenkins']['node']['home'] %>/slave.jar \
 <% if node['jenkins']['node']['no_certificate_check'] -%>
   -noCertificateCheck \
