@@ -66,6 +66,7 @@ def jenkins_node_compare(current_node, new_node)
   default = jenkins_node_defaults({})
   default.keys.each do |key|
     val = new_node[key] || default[key]
+    val = val.join(' ') if key.to_s == 'labels'
     if !val.nil? && current_node[key.to_s] != val
       Chef::Log.debug("#{new_node[:name]} node.#{key} changed (#{current_node[key.to_s]} != #{val})")
       return true
