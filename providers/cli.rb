@@ -31,13 +31,14 @@ def action_run # rubocop:disable MethodLength
   no_certificate_check = @new_resource.no_certificate_check || node['jenkins']['node']['no_certificate_check']
 
   # recipes will chown to jenkins later if this doesn't already exist
-  directory 'home for jenkins-cli.jar' do
+  directory "#{@new_resource.name} home for jenkins-cli.jar" do
     action :create
     path node['jenkins']['node']['home']
   end
 
   cli_jar = ::File.join(home, 'jenkins-cli.jar')
-  remote_file cli_jar do
+  remote_file "#{@new_resource.name} jenkins-cli.jar" do
+    path cli_jar
     source "#{url}/jnlpJars/jenkins-cli.jar"
     not_if { ::File.exists?(cli_jar) }
   end
@@ -60,7 +61,8 @@ def action_run # rubocop:disable MethodLength
   command << " --password #{password}" if password
   command << " --password_file #{password_file}" if password_file
 
-  je = jenkins_execute(command) do
+  je = jenkins_execute("#{@new_resource.name} #{command}") do
+    command command
     cwd home
     if new_resource.block
       block do |stdout|

@@ -58,10 +58,6 @@ remote_file "#{home_dir}\\slave.jar" do
   notifies :restart, "service[#{service_name}]", :immediately
 end
 
-cookbook_file "#{node['jenkins']['node']['home']}/node_info.groovy" do
-  source 'node_info.groovy'
-end
-
 secret = ''
 jenkins_cli "node_info for #{node['jenkins']['node']['name']} to get jnlp secret" do
   command "groovy node_info.groovy #{node['jenkins']['node']['name']}"
