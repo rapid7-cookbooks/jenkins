@@ -56,7 +56,7 @@ remote_file slave_jar do
   owner node['jenkins']['node']['user']
   # only restart if slave.jar is updated
   if ::File.exists?(slave_jar)
-    notifies :restart, "service[#{service_name}]", :immediately
+    notifies :restart, "runit_service[#{service_name}]", :immediately
   end
 end
 

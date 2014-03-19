@@ -117,6 +117,10 @@ ruby_block 'block_until_operational' do
 end
 
 log 'ensure_jenkins_is_running' do
-  notifies :start, 'service[jenkins]', :immediately
+  if node['jenkins']['server']['install_method'] == 'war'
+    notifies :start, 'runit_service[jenkins]', :immediately
+  else
+    notifies :start, 'service[jenkins]', :immediately
+  end
   notifies :create, 'ruby_block[block_until_operational]', :immediately
 end

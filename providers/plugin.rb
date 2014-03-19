@@ -98,7 +98,11 @@ private
       group node['jenkins']['server']['plugins_dir_group']
       backup false
       action :create
-      notifies :restart, 'service[jenkins]'
+      if node['jenkins']['server']['install_method'] == 'war'
+        notifies :restart, 'runit_service[jenkins]'
+      else
+        notifies :restart, 'service[jenkins]'
+      end
       notifies :create, 'ruby_block[block_until_operational]'
     end
 
@@ -117,14 +121,22 @@ private
     file plugin_file_path do
       action :delete
       backup false
-      notifies :restart, 'service[jenkins]'
+      if node['jenkins']['server']['install_method'] == 'war'
+        notifies :restart, 'runit_service[jenkins]'
+      else
+        notifies :restart, 'service[jenkins]'
+      end
       notifies :create, 'ruby_block[block_until_operational]'
     end
 
     directory plugin_dir_path do
       action :delete
       recursive true
-      notifies :restart, 'service[jenkins]'
+      if node['jenkins']['server']['install_method'] == 'war'
+        notifies :restart, 'runit_service[jenkins]'
+      else
+        notifies :restart, 'service[jenkins]'
+      end
       notifies :create, 'ruby_block[block_until_operational]'
     end
   end
