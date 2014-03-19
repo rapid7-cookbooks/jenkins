@@ -36,4 +36,6 @@ remote_file File.join(node['jenkins']['server']['home'], 'jenkins.war') do
   notifies :create, 'ruby_block[block_until_operational]'
 end
 
-runit_service 'jenkins'
+runit_service 'jenkins' do
+  sv_timeout node['jenkins']['server']['sv_timeout'] if node['jenkins']['server']['sv_timeout']
+end

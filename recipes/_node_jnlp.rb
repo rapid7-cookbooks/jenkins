@@ -72,4 +72,5 @@ end
 runit_service service_name do
   action :enable
   options(:secret => secret)
+  sv_timeout node['jenkins']['node']['sv_timeout'] if node['jenkins']['node']['sv_timeout']
 end
