@@ -83,7 +83,7 @@ end
 
 execute "#{jenkins_exe} install" do
   cwd home_dir
-  only_if { WMI::Win32_Service.find(:first, :conditions => { :name => service_name }).nil? }
+  not_if { wmi_property_from_query(:name, "select * from Win32_Service where name = '#{service_name}'") }
 end
 
 service_account = node['jenkins']['node']['service_user']
@@ -108,15 +108,14 @@ if service_account != 'LocalSystem'
 end
 
 execute service_cred_command do
-  only_if do
-    service = WMI::Win32_Service.find(:first, :conditions => { :name => service_name })
-    !service.nil? && service.startName != service_account
+  not_if do
+    result = wmi_property_from_query('StartName', "select StartName from Win32_Service where name = '#{service_name}'")
+    result == service_account
   end
-
   notifies :restart, "service[#{service_name}]", :immediately
 end
 
 service service_name do
   action :start
-  only_if { !WMI::Win32_Service.find(:first, :conditions => { :name => service_name }).nil? }
+  only_if { wmi_property_from_query(:name, "select * from Win32_Service where name = '#{service_name}'") }
 end
