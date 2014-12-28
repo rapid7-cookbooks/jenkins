@@ -33,7 +33,7 @@ def action_run # rubocop:disable MethodLength
   # recipes will chown to jenkins later if this doesn't already exist
   directory "#{@new_resource.name} home for jenkins-cli.jar" do
     action :create
-    path node['jenkins']['node']['home']
+    path home
   end
 
   cli_jar = ::File.join(home, 'jenkins-cli.jar')
