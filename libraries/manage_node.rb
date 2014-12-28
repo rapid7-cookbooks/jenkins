@@ -107,7 +107,11 @@ def jenkins_node_manage(args) # rubocop:disable MethodLength
 
   end
 
-  remote_fs = args[:remote_fs].gsub('\\', '\\\\\\') # C:\jenkins -> C:\\jenkins
+  remote_fs = args[:remote_fs]
+  if RUBY_PLATFORM =~ /mingw|win/
+    remote_fs = remote_fs.gsub('/', '\\') # C:/jenkins -> C:\jenkins
+  end
+  remote_fs = remote_fs.gsub('\\', '\\\\\\') # C:\jenkins -> C:\\jenkins
 
   if args[:availability] == 'Demand'
     rs_args = "#{args[:in_demand_delay]}, #{args[:idle_delay]}"
