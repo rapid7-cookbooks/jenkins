@@ -22,6 +22,7 @@
 
 actions :create, :update, :delete, :connect, :disconnect, :offline, :online
 
+attribute :node_name, :kind_of => String
 attribute :description, :kind_of => String
 attribute :remote_fs, :kind_of => String
 attribute :executors, :kind_of => Integer
@@ -50,4 +51,5 @@ attribute :jvm_options, :kind_of => String
 def initialize(name, run_context = nil)
   super
   @action = :create
+  @node_name = name
 end

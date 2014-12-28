@@ -21,7 +21,7 @@
 #
 
 def jenkins_node_defaults(args)
-  args[:name] ||= nil # required
+  args[:node_name] ||= nil # required
   args[:description] ||= ''
   args[:remote_fs] ||= nil # required
   args[:executors] ||= 1
@@ -43,7 +43,7 @@ def jenkins_node_defaults(args)
   when 'command'
     args[:command] ||= ''
   when 'ssh'
-    args[:host] ||= args[:name]
+    args[:host] ||= args[:node_name]
     args[:port] ||= 22
     args[:username] ||= ''
     args[:private_key] ||= ''
@@ -68,11 +68,11 @@ def jenkins_node_compare(current_node, new_node)
     val = new_node[key] || default[key]
     val = val.join(' ') if key.to_s == 'labels'
     if !val.nil? && current_node[key.to_s] != val
-      Chef::Log.debug("#{new_node[:name]} node.#{key} changed (#{current_node[key.to_s]} != #{val})")
+      Chef::Log.debug("#{new_node[:node_name]} node.#{key} changed (#{current_node[key.to_s]} != #{val})")
       return true
     end
   end
-  Chef::Log.debug("#{new_node[:name]} node unchanged")
+  Chef::Log.debug("#{new_node[:node_name]} node unchanged")
   false
 end
 
@@ -146,7 +146,7 @@ if (env != null) {
   props << new EnvironmentVariablesNodeProperty(entries)
 }
 
-slave = new DumbSlave("#{args[:name]}", "#{args[:description]}", "#{remote_fs}",
+slave = new DumbSlave("#{args[:node_name]}", "#{args[:description]}", "#{remote_fs}",
                       "#{args[:executors]}", Node.Mode.#{args[:mode]}, "#{args[:labels].join(" ")}",
                        #{launcher},
                        new RetentionStrategy.#{args[:availability]}(#{rs_args}), props)

@@ -21,7 +21,7 @@
 #
 
 def load_current_resource
-  @current_resource = Chef::Resource::JenkinsNode.new(@new_resource.name)
+  @current_resource = Chef::Resource::JenkinsNode.new(@new_resource.node_name)
   # Inject some useful platform labels
   @new_resource.labels((@new_resource.labels + platform_labels).uniq)
   @current_resource
@@ -33,7 +33,7 @@ end
 
 def action_create
 
-  gscript = "#{new_resource.remote_fs}/manage_#{new_resource.name}.groovy"
+  gscript = "#{new_resource.remote_fs}/manage_#{new_resource.node_name}.groovy"
 
   file gscript do
     action :delete
@@ -46,6 +46,7 @@ def action_create
   end
 
   jenkins_cli "groovy node_info.groovy #{new_resource.name}" do
+    command "groovy node_info.groovy #{new_resource.node_name}"
     block do |stdout|
       current_node = JSON.parse(stdout)
       node_exists = current_node.keys.size > 0
@@ -70,23 +71,33 @@ def action_create
 end
 
 def action_delete
-  jenkins_cli "delete-node #{new_resource.name}"
+  jenkins_cli "delete-node #{new_resource.name}" do
+    command "delete-node #{new_resource.node_name}"
+  end
 end
 
 def action_connect
-  jenkins_cli "connect-node #{new_resource.name}"
+  jenkins_cli "connect-node #{new_resource.name}" do
+    command "connect-node #{new_resource.node_name}"
+  end
 end
 
 def action_disconnect
-  jenkins_cli "disconnect-node #{new_resource.name}"
+  jenkins_cli "disconnect-node #{new_resource.name}" do
+    command "disconnect-node #{new_resource.node_name}"
+  end
 end
 
 def action_online
-  jenkins_cli "online-node #{new_resource.name}"
+  jenkins_cli "online-node #{new_resource.name}" do
+    command "online-node #{new_resource.node_name}"
+  end
 end
 
 def action_offline
-  jenkins_cli "offline-node #{new_resource.name}"
+  jenkins_cli "offline-node #{new_resource.name}" do
+    command "offline-node #{new_resource.node_name}"
+  end
 end
 
 private
