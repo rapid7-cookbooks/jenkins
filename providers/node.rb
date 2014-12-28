@@ -40,12 +40,14 @@ def action_create
     backup false
   end
 
-  cookbook_file "#{node['jenkins']['node']['home']}/node_info.groovy" do
+  cookbook_file "#{new_resource.remote_fs}/node_info.groovy" do
     source 'node_info.groovy'
     cookbook 'jenkins'
   end
 
   jenkins_cli "groovy node_info.groovy #{new_resource.name}" do
+    url new_resource.server_url
+    home new_resource.remote_fs
     command "groovy node_info.groovy #{new_resource.node_name}"
     block do |stdout|
       current_node = JSON.parse(stdout)
@@ -61,6 +63,8 @@ def action_create
   end
 
   jenkins_cli "groovy #{gscript}" do
+    url new_resource.server_url
+    home new_resource.remote_fs
     only_if { ::File.exists?(gscript) }
   end
 
@@ -72,30 +76,40 @@ end
 
 def action_delete
   jenkins_cli "delete-node #{new_resource.name}" do
+    url new_resource.server_url
+    home new_resource.remote_fs
     command "delete-node #{new_resource.node_name}"
   end
 end
 
 def action_connect
   jenkins_cli "connect-node #{new_resource.name}" do
+    url new_resource.server_url
+    home new_resource.remote_fs
     command "connect-node #{new_resource.node_name}"
   end
 end
 
 def action_disconnect
   jenkins_cli "disconnect-node #{new_resource.name}" do
+    url new_resource.server_url
+    home new_resource.remote_fs
     command "disconnect-node #{new_resource.node_name}"
   end
 end
 
 def action_online
   jenkins_cli "online-node #{new_resource.name}" do
+    url new_resource.server_url
+    home new_resource.remote_fs
     command "online-node #{new_resource.node_name}"
   end
 end
 
 def action_offline
   jenkins_cli "offline-node #{new_resource.name}" do
+    url new_resource.server_url
+    home new_resource.remote_fs
     command "offline-node #{new_resource.node_name}"
   end
 end
