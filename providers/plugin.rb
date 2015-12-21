@@ -23,7 +23,12 @@ end
 
 def load_current_resource
   @current_resource = Chef::Resource::JenkinsPlugin.new(@new_resource.name)
-  @current_resource.version(current_version)
+  version = current_version
+  if version
+    @current_resource.version(version)
+  else
+    Chef::Log.warn "Cannot find version for Jenkins plugin #{@new_resource.name}"
+  end
   @current_resource
 end
 
