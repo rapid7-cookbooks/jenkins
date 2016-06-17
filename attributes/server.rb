@@ -62,6 +62,8 @@ end
 default['jenkins']['server']['version'] = nil
 default['jenkins']['server']['war_checksum'] = nil
 default['jenkins']['server']['sv_timeout'] = nil
+# Release type can be "lts" or "weekly"
+default['jenkins']['server']['release_type'] = "weekly"
 
 default['jenkins']['server']['port'] = 8080
 default['jenkins']['server']['host'] = node['fqdn']
