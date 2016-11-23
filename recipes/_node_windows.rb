@@ -108,9 +108,9 @@ if service_account != 'LocalSystem'
   service_cred_command += " password= #{node['jenkins']['node']['service_user_password']}"
 end
 
+result = wmi_property_from_query('StartName', "select StartName from Win32_Service where name = '#{service_name}'")
 execute service_cred_command do
   not_if do
-    result = wmi_property_from_query('StartName', "select StartName from Win32_Service where name = '#{service_name}'")
     result == service_account
   end
   notifies :restart, "service[#{service_name}]", :immediately
@@ -118,5 +118,5 @@ end
 
 service service_name do
   action :start
-  only_if { wmi_property_from_query(:name, "select * from Win32_Service where name = '#{service_name}'") }
+  only_if { service_is_installed }
 end
