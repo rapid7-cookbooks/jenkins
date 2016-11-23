@@ -81,9 +81,10 @@ remote_file jenkins_exe do
   not_if { File.exists?(jenkins_exe) }
 end
 
+service_is_installed = wmi_property_from_query(:name, "select * from Win32_Service where name = '#{service_name}'")
 execute "#{jenkins_exe} install" do
   cwd home_dir
-  not_if { wmi_property_from_query(:name, "select * from Win32_Service where name = '#{service_name}'") }
+  not_if { service_is_installed }
 end
 
 service_account = node['jenkins']['node']['service_user']
