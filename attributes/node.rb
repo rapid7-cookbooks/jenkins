@@ -77,3 +77,11 @@ default['jenkins']['node']['ssh_port'] = 22
 default['jenkins']['node']['ssh_user'] = default['jenkins']['node']['user']
 default['jenkins']['node']['ssh_pass'] = nil
 default['jenkins']['node']['ssh_private_key'] = nil
+
+
+# The limits for the Java process running the node.
+# Example to configure the maximum number of open file descriptors:
+#
+#   node.set['jenkins']['node']['ulimits'] = { 'n' => 8192 }
+#
+default['jenkins']['node']['ulimits'] = nil
