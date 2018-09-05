@@ -1,6 +1,10 @@
 #!/bin/sh
 exec 2>&1
 cd <%= node['jenkins']['node']['home'] %>
+<% limits = node['jenkins']['node']['ulimits'] %>
+<% if limits && !limits.empty? %>
+ulimit <% limits.each { |option, value| %>-<%= option %> <%= value %> <% } %>
+<% end %>
 exec chpst -u <%= node['jenkins']['node']['user'] %><%= ":#{node['jenkins']['node']['chpst_groups'].join(':')}" if node['jenkins']['node']['chpst_groups'] %> \
   env HOME=<%= node['jenkins']['node']['home'] %> \
   USER=<%= node['jenkins']['node']['user'] %> \
