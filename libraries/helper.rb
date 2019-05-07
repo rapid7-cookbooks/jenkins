@@ -20,7 +20,7 @@
 #
 
 require 'chef/mixin/shell_out'
-require 'chef/rest'
+require 'net/http'
 
 # Helper library for testing Jenkins responses
 module JenkinsHelper
@@ -36,7 +36,8 @@ module JenkinsHelper
   end
 
   def self.endpoint_responding?(url)
-    response = Chef::REST::RESTRequest.new(:GET, url, nil).call
+    uri = URI(url)
+    response = Net::HTTP.get(uri)
     if response.kind_of?(Net::HTTPSuccess) ||
           response.kind_of?(Net::HTTPOK) ||
           response.kind_of?(Net::HTTPRedirection) ||
