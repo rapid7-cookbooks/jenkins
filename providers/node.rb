@@ -19,6 +19,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+require "../resources/node"
 
 def load_current_resource
   @current_resource = Chef::Resource::JenkinsNode.new(@new_resource.node_name)
