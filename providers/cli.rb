@@ -61,22 +61,22 @@ def action_run # rubocop:disable MethodLength
   command << " --password #{password}" if password
   command << " --password_file #{password_file}" if password_file
 
-  #je = jenkins_execute("#{@new_resource.name} #{command}") do
-  #  command command
-  #  cwd home
-  #  if new_resource.block
-  #    block do |stdout|
-  #      if no_certificate_check
-  #        # ignore the warning message from jenkins-cli
-  #        # stdout is passed to the block below, which parses the CLI response.
-  #        # If the response string is expected to be JSON, the HTTPS warning
-  #        # message will cause the JSON parse to fail.
-  #        stdout.gsub!(/Skipping HTTPS certificate checks altogether\. Note that this is not secure at all\.\r?\n/, '')
-  #      end
-  #      new_resource.block.call(stdout)
-  #    end
-  #  end
-  #end
+  je = jenkins_execute("#{@new_resource.name} #{command}") do
+    command command
+    cwd home
+    if new_resource.block
+      block do |stdout|
+        if no_certificate_check
+          # ignore the warning message from jenkins-cli
+          # stdout is passed to the block below, which parses the CLI response.
+          # If the response string is expected to be JSON, the HTTPS warning
+          # message will cause the JSON parse to fail.
+          stdout.gsub!(/Skipping HTTPS certificate checks altogether\. Note that this is not secure at all\.\r?\n/, '')
+        end
+        new_resource.block.call(stdout)
+      end
+    end
+  end
 
-  #new_resource.updated_by_last_action(je.updated?)
+  new_resource.updated_by_last_action(je.updated?)
 end
