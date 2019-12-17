@@ -41,6 +41,9 @@ else
   default['jenkins']['node']['agent_type'] = 'jnlp'
 end
 
+default['jenkins']['node']['use_jnlp_token_auth'] = false
+default['jenkins']['node']['jnlp']['user'] = 'jenkins'
+default['jenkins']['node']['jnlp']['token'] = '*******'
 default['jenkins']['node']['user'] = 'jenkins-node'
 default['jenkins']['node']['user_comment'] = 'Jenkins CI node (jnlp)'
 default['jenkins']['node']['group'] = 'jenkins-node'

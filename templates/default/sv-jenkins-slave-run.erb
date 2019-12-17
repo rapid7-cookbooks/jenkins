@@ -20,4 +20,10 @@ exec chpst -u <%= node['jenkins']['node']['user'] %><%= ":#{node['jenkins']['nod
   -noCertificateCheck \
 <% end -%>
   -jnlpUrl <%= node['jenkins']['server']['url'] %>/computer/<%= node['jenkins']['node']['name'] %>/slave-agent.jnlp \
+<% if node['jenkins']['node']['use_jnlp_token_auth'] -%>
+  -jnlpCredentials <%= node['jenkins']['node']['jnlp']['user'] %>:<%= node['jenkins']['node']['jnlp']['token'] %>
+<% else -%>
   <%= !@options[:secret] || @options[:secret].empty? ? '' : "-secret #{@options[:secret]}" %>
+<% end -%>
+
+

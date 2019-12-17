@@ -49,7 +49,7 @@ jenkins_node node['jenkins']['node']['name'] do
   launcher     'jnlp'
   availability node['jenkins']['node']['availability'] if node['jenkins']['node']['availability']
   env          node['jenkins']['node']['env'] if node['jenkins']['node']['env']
-end
+end unless node['jenkins']['node']['use_jnlp_token_auth']
 
 remote_file slave_jar do
   source "#{node['jenkins']['server']['url']}/jnlpJars/slave.jar"
@@ -67,7 +67,7 @@ jenkins_cli "node_info for #{node['jenkins']['node']['name']} to get jnlp secret
     current_node = JSON.parse(stdout)
     secret.replace current_node['secret'] if current_node['secret']
   end
-end
+end unless node['jenkins']['node']['use_jnlp_token_auth']
 
 runit_service service_name do
   action :enable
