@@ -72,6 +72,7 @@ default['jenkins']['server']['url']  = "http://#{default['jenkins']['server']['h
 default['jenkins']['server']['plugins'] = []
 default['jenkins']['server']['jvm_options'] = nil
 default['jenkins']['server']['pubkey'] = nil
+default['jenkins']['server']['jenkins_args'] = nil
 
 default['jenkins']['http_proxy']['variant'] = 'nginx'
 default['jenkins']['http_proxy']['www_redirect'] = 'disable'
